@@ -1,0 +1,60 @@
+profiles:
+
+  default:
+    description: "Single-vendor Anthropic. Easiest first-run; one API key."
+    outliner:
+      provider: anthropic
+      model: claude-sonnet-4-6
+      enable_caching: true
+      max_tokens: 4096
+    row_fallback:
+      provider: anthropic
+      model: claude-haiku-4-5-20251001
+      enable_caching: true
+      max_tokens: 1024
+    vision_fallback:
+      provider: anthropic
+      model: claude-sonnet-4-6
+      max_tokens: 4096
+
+  best_of_breed:
+    description: "Mix providers — best price/capability per task. Requires 3 API keys."
+    outliner:        { provider: openai,    model: gpt-4o,                   max_tokens: 4096 }
+    row_fallback:    { provider: google,    model: gemini-2.5-flash-lite,    max_tokens: 1024 }
+    vision_fallback: { provider: anthropic, model: claude-sonnet-4-6,        max_tokens: 4096 }
+
+  cost:
+    description: "Cheapest credible across the board. Single SDK (xAI Grok)."
+    outliner:        { provider: xai, model: grok-3-fast, max_tokens: 4096 }
+    row_fallback:    { provider: xai, model: grok-3-fast, max_tokens: 1024 }
+    vision_fallback: { provider: xai, model: grok-3-fast, max_tokens: 4096 }
+
+  openai_only:
+    description: "OpenAI-only. For orgs sanctioned to OpenAI."
+    outliner:        { provider: openai, model: gpt-4o,      max_tokens: 4096 }
+    row_fallback:    { provider: openai, model: gpt-4o-mini,  max_tokens: 1024 }
+    vision_fallback: { provider: openai, model: gpt-4o,       max_tokens: 4096 }
+
+  high_accuracy:
+    description: "Maximum quality. Use only if benchmark proves it."
+    outliner:        { provider: anthropic, model: claude-opus-4-7, max_tokens: 4096 }
+    row_fallback:    { provider: openai,    model: gpt-4o,          max_tokens: 1024 }
+    vision_fallback: { provider: anthropic, model: claude-opus-4-7, max_tokens: 4096 }
+
+pipeline:
+  trust_mode: human_approval
+  pattern_store_path: data/patterns.duckdb
+  llm_outline_threshold: 0.6
+  fuzzy_threshold: 0.70
+  fuzzy_high_threshold: 0.95
+  ocr_min_chars: 50
+  enable_color_detection: true
+  log_level: INFO
+
+notifications:
+  slack_webhook_url: ""
+
+output:
+  clean_csv: output/clean.csv
+  debug_csv: output/debug.csv
+  log_file: output/extraction.log

@@ -1,0 +1,58 @@
+[project]
+name = "skins-extractor"
+version = "0.1.0"
+description = "PDF roster extraction pipeline"
+requires-python = ">=3.12"
+
+dependencies = [
+    "pdfplumber>=0.11",
+    "pymupdf>=1.24",
+    "pydantic>=2.7",
+    "typer>=0.12",
+    "rapidfuzz>=3.9",
+    "duckdb>=1.0",
+    "anthropic>=0.39",
+    "openai>=1.50",
+    "google-genai>=0.1",
+    "httpx>=0.27",
+    "jinja2>=3.1",
+    "matplotlib>=3.9",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "rich>=13",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-vcr>=1.0",
+    "reportlab>=4",
+    "ruff>=0.5",
+    "pyright>=1.1",
+]
+
+[project.scripts]
+skins = "skins_extractor.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/skins_extractor"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.pyright]
+pythonVersion = "3.12"
+typeCheckingMode = "basic"
+venvPath = "."
+venv = ".venv"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
